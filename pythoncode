@@ -1,0 +1,56 @@
+!pip install pandas azure-eventhub
+import pandas as pd
+import json
+from azure.eventhub import EventHubProducerClient, EventData
+import time
+
+# --- 1. PASTE YOUR DETAILS HERE ---
+# Get this from your Event Hub Namespace -> Shared access policies -> RootManageSharedAccessKey
+EVENT_HUB_CONNECTION_STR = "your azure key"
+EVENT_HUB_NAME = "reviews-stream"
+
+# Make sure this CSV file is in the same folder as your script
+CSV_FILE_PATH = "Reviews.csv"
+
+# --- 2. Create a producer client to send messages ---
+producer = EventHubProducerClient.from_connection_string(
+    conn_str=EVENT_HUB_CONNECTION_STR,
+    eventhub_name=EVENT_HUB_NAME
+)
+
+# --- 3. Read the CSV and send reviews one by one ---
+try:
+    df = pd.read_csv(CSV_FILE_PATH)
+    print("✅ CSV file loaded successfully. Starting to stream reviews...")
+
+    with producer:
+        for index, row in df.iterrows():
+            # Create a dictionary from the row
+            review_data = {
+                "reviewId": row.get('Id'),
+                "productId": row.get('ProductId'),
+                "userId": row.get('UserId'),
+                "text": row.get('Text'),
+                "summary": row.get('Summary'),
+                "score": row.get('Score')
+            }
+            
+            # Create a batch and add the event
+            event_data_batch = producer.create_batch()
+            # Convert dictionary to a JSON string to send
+            event_data_batch.add(EventData(json.dumps(review_data)))
+            
+            # Send the batch of events to the event hub
+            producer.send_batch(event_data_batch)
+            
+            print(f"Sent review #{index + 1}")
+            
+            # Pause for a second to simulate a real-time stream
+            time.sleep(1)
+
+except FileNotFoundError:
+    print(f"❌ ERROR: The file '{CSV_FILE_PATH}' was not found. Please make sure it's in the same folder as the script.")
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")
+finally:
+    print("✅ Finished streaming all reviews.")
