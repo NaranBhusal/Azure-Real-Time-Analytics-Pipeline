@@ -36,7 +36,7 @@ The pipeline follows a modern, event-driven architecture, moving data from a liv
 ## ✨ Final Dashboard
 The final result is an interactive Power BI dashboard that provides key insights into customer feedback, product scores, and common themes in reviews.
 
-![Power BI Review Dashboard](link_to_your_dashboard_screenshot.png)
+![Power BI Review Dashboard](https://github.com/NaranBhusal/Azure-Real-Time-Analytics-Pipeline/blob/a4b152022952957b022b857ec2239e89e89183fe/Capture.jpg)
 ---
 
 ## 🚀 Key Learnings & Future Improvements
