@@ -13,7 +13,7 @@ This project showcases a complete, real-time (or near-real-time) data engineerin
 The pipeline follows a modern, event-driven architecture, moving data from a live source to a processing engine and then fanning out to storage and visualization layers.
 
 
-![Architecture Diagram]([link_to_your_architecture_diagram.png](https://github.com/NaranBhusal/Azure-Real-Time-Analytics-Pipeline/blob/ba7acd8812f89997ef6b1c08fe942e95b9ebf7be/archetecturediagram.jpg))
+![Architecture Diagram](link_to_your_architecture_diagram.png)
 
 **The data flows through the following stages:**
 1.  **Data Ingestion:** A real-time stream of review data is sent to **Azure Event Hubs**, a high-throughput data ingestion service.
